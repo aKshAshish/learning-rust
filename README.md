@@ -31,7 +31,9 @@ PI = 3.142; // will throw error
 Every value in rust is of a certain type. Rust is a *statically typed* language which means that it must know the types of all variables at compile time.<br>
 Rust has two types of data **Scalar** and **Compound**.
 ### Scalar (or single value data types)
-- Rust has four primary scalar types: integers, floating-point numbers, Booleans, and characters.
+
+> Rust has four primary scalar types: integers, floating-point numbers, Booleans, and characters.
+
 ```rust
 // Integers
 let a: u32 = 64; // Unsigned integer 32bit
@@ -59,7 +61,8 @@ let not_flag: bool = false;
 |Byte (u8 only) | b'A'   |
 
 ### Compound (or multiple value data types)
-- Rust has two primitive compound types: *tuples* and *arrays*.
+
+> Rust has two primitive compound types: *tuples* and *arrays*.
 
 **Tuples**
 - A tuple is a general way of grouping together a number of values with a *variety of types* into one compound type.
@@ -85,3 +88,117 @@ let first = a[0];
 let second = a[1];
 ```
 ## Functions
+```rust
+fn say_hello() {
+    println!("Hello World");
+}
+
+fn square(n: u32) -> u32 {
+    n*n
+}
+
+// Every block returns the value of the last expresssion
+// in this case it returns square of n
+```
+
+## Statements and Expressions
+Rust is an expression-based language, this is an important distinction. Other languages don’t have the same distinctions. Function bodies are made up of a series of statements optionally ending in an expression. So let’s look at what statements and expressions are and how their differences affect the bodies of functions. <br>
+
+> **Statements** are instructions that perform some action and do not return a value.
+```rust
+fn main() {
+    let y = 6; // This is a statement, while 6 in itself is a expression with value as 6
+}
+```
+- Statements do not return values so one cannot assign a statement. *Function definition* is also a statement.<br>
+
+> **Expressions** evaluate to a resultant value.
+```rust
+fn main() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
+
+    println!("The value of y is: {y}");
+}
+```
+- Consider x + 1, which is an expression that evaluates to the value 4.
+- Expressions can be part of statements, the 3 in the statement `let x = 3;` is an expression that evaluates to the value 3.
+- Calling a function is an expression.
+- Calling a macro is an expression.
+- A new scope block created with curly brackets is an expression. This expression: 
+    ```rust
+    {
+        let x = 3;
+        x + 1
+    }
+    ```
+    is a block that, in this case, evaluates to 4. That value gets bound to y as part of the let statement. Note that the x + 1 line doesn’t have a semicolon at the end. **Expressions do not include ending semicolons.** If you add a semicolon to the end of an expression, you turn it into a statement, and it will then not return a value.
+
+## Control And Flow
+
+**if-else**
+
+- `if` expression starts with `if` followed by a condition. The condition should evaluate to a `bool` value.
+
+```rust
+fn main() {
+    let x = 3;
+    if x % 2 == 0 {
+        println!("x is even");
+    } else {
+        println!("x is odd");
+    }
+
+    // if x { // this will result in error as x is not boolean
+    //     println!("Hi")
+    // }
+
+    // Using if as an expression
+    let condition = true;
+    let number = if conditiion { 5 } else { 6 }; // Return type of if and else should be same as rust compiler will need to know the type of value of number. If they are different type can only be determined at runtime which rust compiler does not allow for type safety.
+}
+```
+### **Loops**
+
+Rust has 3 types of loops: `loop`, `while` and `for`.<br>
+
+**loop**
+> To repeat the code until exited explicitly using `break` expression.
+```rust
+fn main() {
+    loop {
+        println!("again!");
+    } // A never ending loop
+}
+
+fn main() {
+    let mut count = 1;
+    let result = loop {
+        count += 1;
+        if count == 10 {
+            break count * 2; // if a value is added after a break expression,
+            // it will be returned as the value of expression and the loop will stop
+        }
+    };
+    println!("Result of the loop {result}");
+}
+
+fn main() {
+    let mut count = 1;
+    let num = 2;
+    'labelled_loop: loop {
+        let value = num * count;
+        println!("{value}")
+        if count == 10 {
+            break 'labelled_loop;
+        }
+        count += 1;
+    }
+}
+```
+- Loop label start with `'`(single quote).
+
+**while**
+> The conditional loops.
